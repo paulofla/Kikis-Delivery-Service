@@ -9,7 +9,6 @@ group = "me.pauloflaherty"
 version = "1.0-SNAPSHOT"
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -23,9 +22,9 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "13"
+    kotlinOptions.jvmTarget = "16"
 }
 
 application {
-    mainClass.set("ServerKt")
+    mainClass.set("DeliveryServiceKt")
 }

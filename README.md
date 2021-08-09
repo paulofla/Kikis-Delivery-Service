@@ -203,4 +203,8 @@ Delivery Cost Calculation Test List:
     2. Output:
        1. PKG1 5 135
 
-I feel the above will give me adequate test coverage and I will start from the simplest which I think is the first
+I feel the above will give me adequate test coverage and I will start from the simplest which I think is the first.
+
+I will test the delivery calculation first and move to taking user input later as this is harder to test.
+
+The 5 and 10 for the base weight and base distance cost should be moved to an environment variable in the future.
