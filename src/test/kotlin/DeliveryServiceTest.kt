@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.TestFactory
-import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -42,6 +41,7 @@ internal class DeliveryServiceTest {
             DeliveryServiceGenerateDeliveryTest("Get 1% off","1%OFF", Package(1, "PKG1", 1, 1), Delivery(1, "PKG1", 0.01, 15.84.toBigDecimal())),
             DeliveryServiceGenerateDeliveryTest("Get 50% off","HALF-OFF", Package(1, "PKG1", 1, 1), Delivery(1, "PKG1", 0.5, 8.00.toBigDecimal())),
             DeliveryServiceGenerateDeliveryTest("Get 100% off","100-OFF", Package(1, "PKG1", 1, 1), Delivery(1, "PKG1", 1.0, 0.00.toBigDecimal())),
+            DeliveryServiceGenerateDeliveryTest("Allow White Space in the coupon code","WHITE SPACE", Package(1, "PKG1", 1, 1), Delivery(1, "PKG1", 0.05, 15.20.toBigDecimal())),
         ).map { testData ->
             DynamicTest.dynamicTest(testData.testCaseName) {
                 assertEquals(testData.expected, deliveryService.generateDelivery(1, testData.item, testData.couponCode))
