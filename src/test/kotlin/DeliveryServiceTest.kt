@@ -15,39 +15,102 @@ internal class DeliveryServiceTest {
         )
     )
 
-    @Nested
-    inner class OnePackage {
-        @Test
-        fun `No coupon supplied`() {
-            assertEquals(Delivery(1, "PKG1", 0.0, 115.00.toBigDecimal()), deliveryService.generateDelivery(100, Package(1, "PKG1", 1, 1), "STATIC"))
-        }
+    @Test
+    fun `No coupon supplied`() {
+        assertEquals(
+            listOf(Delivery(1, "PKG1", 0.0, 115.00.toBigDecimal())),
+            deliveryService.generateDelivery(100, listOf(Package(1, "PKG1", 1, 1)), "STATIC")
+        )
+    }
 
-        @TestFactory
-        fun `Invalid coupon`() = listOf(
-            ("As it does not exist" to Package(1, "PKG1", 1, 1)) to Delivery(1, "PKG1", 0.0, 115.00.toBigDecimal()),
-            ("Due to a lighter weight" to Package(1, "PKG1", 1, 2)) to Delivery(1, "PKG1", 0.0, 120.00.toBigDecimal()),
-            ("Due to a heavier weight" to Package(1, "PKG1", 3, 2)) to Delivery(1, "PKG1", 0.0, 140.00.toBigDecimal()),
-            ("Due to a smaller distance" to Package(1, "PKG1", 2, 1)) to Delivery(1, "PKG1", 0.0, 125.00.toBigDecimal()),
-            ("Due to a heavier weight" to Package(1, "PKG1", 2, 3)) to Delivery(1, "PKG1", 0.0, 135.00.toBigDecimal()),
-        ).map { (input, expected) ->
-            DynamicTest.dynamicTest(input.first) {
-                assertEquals(expected, deliveryService.generateDelivery(100, input.second, "STATIC"))
-            }
+    @TestFactory
+    fun `Invalid coupon`() = listOf(
+        DeliveryServiceGenerateDeliveryTest(
+            "As it does not exist",
+            "STATIC",
+            listOf(Package(1, "PKG1", 1, 1)),
+            listOf(Delivery(1, "PKG1", 0.0, 115.00.toBigDecimal()))
+        ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Due to a lighter weight",
+            "STATIC",
+            listOf(Package(1, "PKG1", 1, 2)),
+            listOf(Delivery(1, "PKG1", 0.0, 120.00.toBigDecimal()))
+        ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Due to a heavier weight",
+            "STATIC",
+            listOf(Package(1, "PKG1", 3, 2)),
+            listOf(Delivery(1, "PKG1", 0.0, 140.00.toBigDecimal()))
+        ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Due to a smaller distance",
+            "STATIC",
+            listOf(Package(1, "PKG1", 2, 1)),
+            listOf(Delivery(1, "PKG1", 0.0, 125.00.toBigDecimal()))
+        ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Due to a longer distance",
+            "STATIC",
+            listOf(Package(1, "PKG1", 2, 3)),
+            listOf(Delivery(1, "PKG1", 0.0, 135.00.toBigDecimal()))
+        ),
+    ).map { testData ->
+        DynamicTest.dynamicTest(testData.testCaseName) {
+            assertEquals(testData.expected, deliveryService.generateDelivery(100, testData.packages, testData.couponCode))
         }
+    }
 
-        @TestFactory
-        fun `Valid coupon`() = listOf(
-            DeliveryServiceGenerateDeliveryTest("Get 10% off","STATIC", Package(1, "PKG1", 2, 2), Delivery(1, "PKG1", 0.1, 27.90.toBigDecimal())),
-            DeliveryServiceGenerateDeliveryTest("Get 1% off","1%OFF", Package(1, "PKG1", 1, 1), Delivery(1, "PKG1", 0.01, 15.84.toBigDecimal())),
-            DeliveryServiceGenerateDeliveryTest("Get 50% off","HALF-OFF", Package(1, "PKG1", 1, 1), Delivery(1, "PKG1", 0.5, 8.00.toBigDecimal())),
-            DeliveryServiceGenerateDeliveryTest("Get 100% off","100-OFF", Package(1, "PKG1", 1, 1), Delivery(1, "PKG1", 1.0, 0.00.toBigDecimal())),
-            DeliveryServiceGenerateDeliveryTest("Allow White Space in the coupon code","WHITE SPACE", Package(1, "PKG1", 1, 1), Delivery(1, "PKG1", 0.05, 15.20.toBigDecimal())),
-        ).map { testData ->
-            DynamicTest.dynamicTest(testData.testCaseName) {
-                assertEquals(testData.expected, deliveryService.generateDelivery(1, testData.item, testData.couponCode))
-            }
+    @TestFactory
+    fun `Valid coupon`() = listOf(
+        DeliveryServiceGenerateDeliveryTest(
+            "Get 10% off",
+            "STATIC",
+            listOf(Package(1, "PKG1", 2, 2)),
+            listOf(Delivery(1, "PKG1", 0.1, 27.90.toBigDecimal()))
+        ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Get 1% off",
+            "1%OFF",
+            listOf(Package(1, "PKG1", 1, 1)),
+            listOf(Delivery(1, "PKG1", 0.01, 15.84.toBigDecimal()))
+        ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Get 50% off",
+            "HALF-OFF",
+            listOf(Package(1, "PKG1", 1, 1)),
+            listOf(Delivery(1, "PKG1", 0.5, 8.00.toBigDecimal()))
+        ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Get 100% off",
+            "100-OFF",
+            listOf(Package(1, "PKG1", 1, 1)),
+            listOf(Delivery(1, "PKG1", 1.0, 0.00.toBigDecimal()))
+        ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Allow White Space in the coupon code",
+            "WHITE SPACE",
+            listOf(Package(1, "PKG1", 1, 1)),
+            listOf(Delivery(1, "PKG1", 0.05, 15.20.toBigDecimal()))
+        ),
+    ).map { testData ->
+        DynamicTest.dynamicTest(testData.testCaseName) {
+            assertEquals(testData.expected, deliveryService.generateDelivery(1, testData.packages, testData.couponCode))
         }
+    }
+
+    @Test
+    fun `Multiple coupons supplied`() {
+        assertEquals(
+            listOf(Delivery(1, "PKG1", 0.0, 115.00.toBigDecimal())),
+            deliveryService.generateDelivery(100, listOf(Package(1, "PKG1", 1, 1)), "STATIC"),
+        )
     }
 }
 
-data class DeliveryServiceGenerateDeliveryTest(val testCaseName: String, val couponCode: String, val item: Package, val expected: Delivery)
+data class DeliveryServiceGenerateDeliveryTest(
+    val testCaseName: String,
+    val couponCode: String,
+    val packages: List<Package>,
+    val expected: List<Delivery>,
+)
