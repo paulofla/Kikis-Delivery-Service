@@ -27,13 +27,24 @@ Coupon:
 - id
 - code
 - discount
-- criteria:
-    - distance
-    - weight
-- start date (Versus a flag in case she mis-printed coupon criteria)
-- expiry date (Versus a flag in case she mis-printed coupon criteria)
+- distanceCriteria: IntRange
+- weightCriteria: IntRange
+- start date (Versus an is active flag in case she mis-printed coupon criteria - will remove this as I can add this functionality later)
+- expiry date (Versus an is active flag in case she mis-printed coupon criteria - will remove this as I can add this functionality later)
 
 Coupon Criteria: (1 offer applied to 1 package only)
+
+Package:
+- id
+- name
+- weight
+- distance
+
+Delivery:
+- id
+- name
+- discountPercent
+- price
 
 ## Input & Output
 
@@ -107,11 +118,11 @@ This is my coupon table
 
 | Code         | Discount  | Distance (km) | Weight (kg) |
 | ------------ |:---------:| ------------- |:-----------:|
-| STATIC       |  10%      | 2km-2km       | 2kg-2kg     |
-| 1%OFF        |   1%      | 1km-10km      | 1kg-10kg    |
-| HALF-OFF     |  50%      | 1km-10km      | 1kg-10kg    |
-| 100-OFF      | 100%      | 1km-10km      | 1kg-10kg    |
-| WHITE SPACE  |   5%      | 1km-10km      | 1kg-10kg    |
+| STATIC       |  0.1      | 2km-2km       | 2kg-2kg     |
+| 1%OFF        |  0.01     | 1km-10km      | 1kg-10kg    |
+| HALF-OFF     |  0.5      | 1km-10km      | 1kg-10kg    |
+| 100-OFF      |  1.0      | 1km-10km      | 1kg-10kg    |
+| WHITE SPACE  |  0.05     | 1km-10km      | 1kg-10kg    |
 
 Delivery Cost Calculation Test List:
 1. Delivery with 1 package and no coupon code
