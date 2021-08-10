@@ -1,3 +1,5 @@
+import java.math.BigDecimal
+
 fun main(args: Array<String>) {
 
 }
@@ -11,7 +13,7 @@ class DeliveryService(
                     item.distance in coupon.distanceCriteria &&
                     item.weight in coupon.weightCriteria
         }?.discount ?: 0.0
-        val deliveryPrice: Double = (basePrice + (item.distance * 5) + (item.weight * 10)) * (1.00 - discount)
+        val deliveryPrice: BigDecimal = (basePrice + (item.distance * 5) + (item.weight * 10)).toBigDecimal() * (1.00-discount).toBigDecimal()
         return Delivery(1, item.name, discount, deliveryPrice)
     }
 }

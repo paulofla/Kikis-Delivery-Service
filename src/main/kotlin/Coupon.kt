@@ -1,3 +1,5 @@
+import java.math.BigDecimal
+
 class Coupon(
     val id: Int,
     val code: String,
