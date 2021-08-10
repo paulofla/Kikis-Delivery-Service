@@ -1,6 +1,6 @@
 class Delivery(
     val id: Int,
     val name: String,
-    val discountPercent: Int,
+    val discountPercent: Double,
     val price: Double,
 )

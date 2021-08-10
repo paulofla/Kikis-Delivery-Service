@@ -12,6 +12,6 @@ class DeliveryService(
                     item.weight in coupon.weightCriteria
         }?.discount ?: 0.0
         val deliveryPrice: Double = (basePrice + (item.distance * 5) + (item.weight * 10)) * (1.00 - discount)
-        return Delivery(1, item.name, 0, deliveryPrice)
+        return Delivery(1, item.name, discount, deliveryPrice)
     }
 }

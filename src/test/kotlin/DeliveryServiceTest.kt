@@ -14,7 +14,7 @@ internal class DeliveryServiceTest {
     fun testDeliveryWith1PackageNoCoupon() {
         val expectedId = 1
         val expectedName = "PKG1"
-        val expectedDiscount = 0
+        val expectedDiscount = 0.0
         val expectedPrice = 115.00
         val delivery = deliveryService.generateDelivery(100, Package(1,"PKG1", 1, 1))
         assertEquals(expectedId, delivery.id)
@@ -27,9 +27,61 @@ internal class DeliveryServiceTest {
     fun testDeliveryWith1PackageAnd1CouponCodeThatDoesNotExist() {
         val expectedId = 1
         val expectedName = "PKG1"
-        val expectedDiscount = 0
+        val expectedDiscount = 0.0
         val expectedPrice = 115.00
         val delivery = deliveryService.generateDelivery(100, Package(1,"PKG1", 1, 1), "NO-COUPON")
+        assertEquals(expectedId, delivery.id)
+        assertEquals(expectedName, delivery.name)
+        assertEquals(expectedDiscount, delivery.discountPercent)
+        assertEquals(expectedPrice, delivery.price)
+    }
+
+    @Test
+    fun testDeliveryWith1PackageAnd1CouponCodeThatExistsButWeightAndDistanceIsNotValid() {
+        val expectedId = 1
+        val expectedName = "PKG1"
+        val expectedDiscount = 0.0
+        val expectedPrice = 115.00
+        val delivery = deliveryService.generateDelivery(100, Package(1,"PKG1", 1, 1), "STATIC")
+        assertEquals(expectedId, delivery.id)
+        assertEquals(expectedName, delivery.name)
+        assertEquals(expectedDiscount, delivery.discountPercent)
+        assertEquals(expectedPrice, delivery.price)
+    }
+
+    @Test
+    fun testDeliveryWith1PackageAnd1CouponCodeThatExistsButWeightIsNotValid() {
+        val expectedId = 1
+        val expectedName = "PKG1"
+        val expectedDiscount = 0.0
+        val expectedPrice = 120.00
+        val delivery = deliveryService.generateDelivery(100, Package(1,"PKG1", 1, 2), "STATIC")
+        assertEquals(expectedId, delivery.id)
+        assertEquals(expectedName, delivery.name)
+        assertEquals(expectedDiscount, delivery.discountPercent)
+        assertEquals(expectedPrice, delivery.price)
+    }
+
+    @Test
+    fun testDeliveryWith1PackageAnd1CouponCodeThatExistsButDistanceIsNotValid() {
+        val expectedId = 1
+        val expectedName = "PKG1"
+        val expectedDiscount = 0.0
+        val expectedPrice = 125.00
+        val delivery = deliveryService.generateDelivery(100, Package(1,"PKG1", 2, 1), "STATIC")
+        assertEquals(expectedId, delivery.id)
+        assertEquals(expectedName, delivery.name)
+        assertEquals(expectedDiscount, delivery.discountPercent)
+        assertEquals(expectedPrice, delivery.price)
+    }
+
+    @Test
+    fun testDeliveryWith1PackageAnd1CouponCodeThatIsValid() {
+        val expectedId = 1
+        val expectedName = "PKG1"
+        val expectedDiscount = 0.1
+        val expectedPrice = 117.00
+        val delivery = deliveryService.generateDelivery(100, Package(1,"PKG1", 2, 2), "STATIC")
         assertEquals(expectedId, delivery.id)
         assertEquals(expectedName, delivery.name)
         assertEquals(expectedDiscount, delivery.discountPercent)
