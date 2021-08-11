@@ -169,10 +169,10 @@ Delivery Cost Calculation Test List:
        1. PKG1 0 135
 8. Delivery with 1 package and a coupon code that exists and is valid
    1. Input:
-       1. 100 1
+       1. 1 1
        2. PKG1 2 2 STATIC
    2. Output:
-       1. PKG1 10 117
+       1. PKG1 10 27.9
 9. Delivery with 1 package and 1% off coupon code
    1. Input:
       1. 1 1
@@ -193,26 +193,28 @@ Delivery Cost Calculation Test List:
        1. PKG1 100 0
 12. Delivery with multiple packages and using the same coupon code
     3. Input:
-       1. 100 2
+       1. 1 2
        2. PKG1 2 2 STATIC
        3. PKG2 2 2 STATIC
     4. Output:
-       1. PKG1 10 117
-       2. PKG2 10 117
+       1. PKG1 10 27.9
+       2. PKG2 10 27.9
 13. Delivery with multiple packages and using different coupon codes
     1. Input:
-       1. 100 2
+       1. 1 2
        2. PKG1 2 2 NO-COUPON
        3. PKG2 2 2 STATIC
+       4PKG2 2 2 HALF-OFF
     2. Output:
-       1. PKG1 0 130
-       2. PKG2 10 117
+       1. PKG1 0 31
+       2. PKG2 10 27.9
+       3. PKG2 10 15.5
 14. Delivery with 1 package and a coupon code with whitespace is valid
     1. Input:
        1. 100 1
        2. PKG1 2 3 WHITE SPACE
     2. Output:
-       1. PKG1 5 135
+       1. PKG1 5 15.2
 
 I feel the above will give me adequate test coverage and I will start from the simplest which I think is the first.
 

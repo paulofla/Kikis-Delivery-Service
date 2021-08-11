@@ -7,10 +7,10 @@ fun main(args: Array<String>) {
 class DeliveryService(
     private val coupons: List<Coupon>
 ) {
-    fun generateDelivery(basePrice: Int, packages: List<Package>, couponCode: String? = null): List<Delivery> {
+    fun generateDelivery(basePrice: Int, packages: List<Package>): List<Delivery> {
         return packages.mapIndexed { index, item ->
             val discount: Double = coupons.find { coupon ->
-                coupon.code == couponCode &&
+                coupon.code == item.couponCode &&
                         item.distance in coupon.distanceCriteria &&
                         item.weight in coupon.weightCriteria
             }?.discount ?: 0.0
