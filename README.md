@@ -88,7 +88,7 @@ Output:
 
 ### Model
 
-####Coupon:
+#### Coupon:
 - id (Not needed but good practice to have it)
 - code
 - discount
@@ -97,14 +97,14 @@ Output:
 - start date (Versus an is active flag in case she mis-printed coupon criteria - I removed this as I can add this functionality later as it is not needed now)
 - expiry date (Versus an is active flag in case she mis-printed coupon criteria - I removed this as I can add this functionality later as it is not needed now)
 
-####Package:
+#### Package:
 - id (Not needed but good practice to have it)
 - name
 - weight
 - distance
 - couponCode
 
-####Delivery:
+#### Delivery:
 - id
 - name
 - discountPercent
