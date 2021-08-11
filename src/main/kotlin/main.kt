@@ -1,23 +1,34 @@
 fun main(args: Array<String>) {
+    println("Welcome to Kiki's delivery service!")
+
+    val (basePrice, numberOfPackages) = getBasePriceAndNumberOfPackages()
+
+    val packages: MutableList<Package> = mutableListOf()
+    for (index in 1..numberOfPackages) {
+        packages.add(getPackageFromUserInput(index))
+    }
+    val deliveries = deliveryService.generateDeliveries(basePrice, packages)
+    deliveries.mapIndexed { index, delivery ->
+        println("${index + 1}. ${delivery.name} ${(delivery.discountPercent * 100).toInt()} ${delivery.price}")
+    }
+}
+
+private fun getBasePriceAndNumberOfPackages(): Pair<Int, Int> {
     println(
         """
-            Welcome to Kiki's delivery service!
             Please enter the base delivery cost and the number of packages separated by a white space.
             For example: 100 2
         """.trimIndent()
     )
     val (basePrice, numberOfPackages) = readLine()!!.split(' ')
-
-    val packages: MutableList<Package> = mutableListOf()
-    for(index in 1..numberOfPackages.toInt()) {
-        packages.add(getPackageFromUserInput(index))
-    }
-    val deliveries = deliveryService.generateDeliveries(basePrice.toInt(), packages)
-    deliveries.mapIndexed { index, delivery->
-        println("${index+1}. ${delivery.name} ${(delivery.discountPercent * 100).toInt()} ${delivery.price}")
+    return try {
+        Pair(basePrice.toInt(), numberOfPackages.toInt())
+    } catch (_: Exception) {
+        getBasePriceAndNumberOfPackages()
     }
 }
-fun getPackageFromUserInput(index: Int): Package{
+
+private fun getPackageFromUserInput(index: Int): Package {
     println(
         """
             Please enter the package name, weight (in kg), distance (in km) and coupon code separated by a white space for package 1.
@@ -26,12 +37,23 @@ fun getPackageFromUserInput(index: Int): Package{
         """.trimIndent()
     )
     val parts = readLine()!!.split(' ')
+    fun failedToCreatePackage(): Package {
+        print("Incorrect inputs. Please only put in 3 or 4 items separated by a single white space")
+        return getPackageFromUserInput(index)
+    }
     return when (parts.size) {
-        4 -> Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), parts[3])
-        3 -> Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), "")
+        4 -> try {
+            Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), parts[3])
+        } catch (_: Exception) {
+            failedToCreatePackage()
+        }
+        3 -> try {
+            Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), "")
+        } catch (_: Exception) {
+            failedToCreatePackage()
+        }
         else -> {
-            print("Incorrect inputs. Please only put in 3 or 4 items separated by a white space")
-            getPackageFromUserInput(index)
+            failedToCreatePackage()
         }
     }
 }
