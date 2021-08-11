@@ -1,13 +1,9 @@
 import java.math.BigDecimal
 
-fun main(args: Array<String>) {
-
-}
-
 class DeliveryService(
     private val coupons: List<Coupon>
 ) {
-    fun generateDelivery(basePrice: Int, packages: List<Package>): List<Delivery> {
+    fun generateDeliveries(basePrice: Int, packages: List<Package>): List<Delivery> {
         return packages.mapIndexed { index, item ->
             val discount: Double = coupons.find { coupon ->
                 coupon.code == item.couponCode &&
@@ -16,7 +12,7 @@ class DeliveryService(
             }?.discount ?: 0.0
             val deliveryPrice: BigDecimal =
                 (basePrice + (item.distance * 5) + (item.weight * 10)).toBigDecimal() * (1.00 - discount).toBigDecimal()
-            Delivery(index+1, item.name, discount, deliveryPrice)
+            Delivery(index + 1, item.name, discount, deliveryPrice)
         }
     }
 }

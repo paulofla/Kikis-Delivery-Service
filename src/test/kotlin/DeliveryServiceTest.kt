@@ -10,7 +10,6 @@ internal class DeliveryServiceTest {
             Coupon(2, "1%OFF", 0.01, IntRange(1, 10), IntRange(1, 10)),
             Coupon(3, "HALF-OFF", 0.5, IntRange(1, 10), IntRange(1, 10)),
             Coupon(4, "100-OFF", 1.0, IntRange(1, 10), IntRange(1, 10)),
-            Coupon(5, "WHITE SPACE", 0.05, IntRange(1, 10), IntRange(1, 10)),
         )
     )
 
@@ -18,7 +17,7 @@ internal class DeliveryServiceTest {
     fun `No coupon supplied`() {
         assertEquals(
             listOf(Delivery(1, "PKG1", 0.0, 115.00.toBigDecimal())),
-            deliveryService.generateDelivery(100, listOf(Package(1, "PKG1", 1, 1, "STATIC")))
+            deliveryService.generateDeliveries(100, listOf(Package(1, "PKG1", 1, 1, "STATIC")))
         )
     }
 
@@ -53,7 +52,7 @@ internal class DeliveryServiceTest {
         DynamicTest.dynamicTest(testData.testCaseName) {
             assertEquals(
                 testData.expectedDeliveries,
-                deliveryService.generateDelivery(100, testData.packages)
+                deliveryService.generateDeliveries(100, testData.packages)
             )
         }
     }
@@ -81,11 +80,6 @@ internal class DeliveryServiceTest {
             listOf(Delivery(1, "PKG1", 1.0, 0.00.toBigDecimal()))
         ),
         DeliveryServiceGenerateDeliveryTest(
-            "Allow White Space in the coupon code",
-            listOf(Package(1, "PKG1", 1, 1, "WHITE SPACE")),
-            listOf(Delivery(1, "PKG1", 0.05, 15.20.toBigDecimal()))
-        ),
-        DeliveryServiceGenerateDeliveryTest(
             "Multiple of the same coupon is supplied for different packages",
             listOf(Package(1, "PKG1", 2, 2, "STATIC"), Package(2, "PKG2", 2, 2, "STATIC")),
             listOf(Delivery(1, "PKG1", 0.1, 27.90.toBigDecimal()), Delivery(2, "PKG2", 0.1, 27.90.toBigDecimal()))
@@ -107,7 +101,7 @@ internal class DeliveryServiceTest {
         DynamicTest.dynamicTest(testData.testCaseName) {
             assertEquals(
                 testData.expectedDeliveries,
-                deliveryService.generateDelivery(1, testData.packages)
+                deliveryService.generateDeliveries(1, testData.packages)
             )
         }
     }

@@ -209,12 +209,6 @@ Delivery Cost Calculation Test List:
        1. PKG1 0 31
        2. PKG2 10 27.9
        3. PKG2 10 15.5
-14. Delivery with 1 package and a coupon code with whitespace is valid
-    1. Input:
-       1. 100 1
-       2. PKG1 2 3 WHITE SPACE
-    2. Output:
-       1. PKG1 5 15.2
 
 I feel the above will give me adequate test coverage and I will start from the simplest which I think is the first.
 

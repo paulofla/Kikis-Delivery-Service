@@ -26,5 +26,5 @@ tasks.withType<KotlinCompile>() {
 }
 
 application {
-    mainClass.set("DeliveryServiceKt")
+    mainClass.set("MainKt")
 }
