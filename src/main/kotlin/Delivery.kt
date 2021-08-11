@@ -12,7 +12,7 @@ class Delivery(
         return (id == other.id) && (name == other.name) && (discountPercent == other.discountPercent) && (price.setScale(2, RoundingMode.HALF_UP) == other.price.setScale(2, RoundingMode.HALF_UP))
     }
     override fun toString(): String {
-        return "Delivery $name will cost ${price.setScale(2, RoundingMode.HALF_UP)} with a ${discountPercent*100}% discount applied"
+        return "Delivery $id; $name will cost ${price.setScale(2, RoundingMode.HALF_UP)} with a ${discountPercent*100}% discount applied"
     }
 
     override fun hashCode(): Int {

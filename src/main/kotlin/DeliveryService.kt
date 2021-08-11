@@ -8,7 +8,7 @@ class DeliveryService(
     private val coupons: List<Coupon>
 ) {
     fun generateDelivery(basePrice: Int, packages: List<Package>, couponCode: String? = null): List<Delivery> {
-        return packages.map { item ->
+        return packages.mapIndexed { index, item ->
             val discount: Double = coupons.find { coupon ->
                 coupon.code == couponCode &&
                         item.distance in coupon.distanceCriteria &&
@@ -16,7 +16,7 @@ class DeliveryService(
             }?.discount ?: 0.0
             val deliveryPrice: BigDecimal =
                 (basePrice + (item.distance * 5) + (item.weight * 10)).toBigDecimal() * (1.00 - discount).toBigDecimal()
-            Delivery(1, item.name, discount, deliveryPrice)
+            Delivery(index+1, item.name, discount, deliveryPrice)
         }
     }
 }

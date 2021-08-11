@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.TestFactory
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class DeliveryServiceTest {
     private val deliveryService = DeliveryService(
@@ -57,7 +57,10 @@ internal class DeliveryServiceTest {
         ),
     ).map { testData ->
         DynamicTest.dynamicTest(testData.testCaseName) {
-            assertEquals(testData.expected, deliveryService.generateDelivery(100, testData.packages, testData.couponCode))
+            assertEquals(
+                testData.expectedDeliveries,
+                deliveryService.generateDelivery(100, testData.packages, testData.couponCode)
+            )
         }
     }
 
@@ -93,18 +96,19 @@ internal class DeliveryServiceTest {
             listOf(Package(1, "PKG1", 1, 1)),
             listOf(Delivery(1, "PKG1", 0.05, 15.20.toBigDecimal()))
         ),
+        DeliveryServiceGenerateDeliveryTest(
+            "Multiple of the same coupon is supplied for different packages",
+            "STATIC",
+            listOf(Package(1, "PKG1", 2, 2), Package(2, "PKG2", 2, 2)),
+            listOf(Delivery(1, "PKG1", 0.1, 27.90.toBigDecimal()), Delivery(2, "PKG2", 0.1, 27.90.toBigDecimal()))
+        ),
     ).map { testData ->
         DynamicTest.dynamicTest(testData.testCaseName) {
-            assertEquals(testData.expected, deliveryService.generateDelivery(1, testData.packages, testData.couponCode))
+            assertEquals(
+                testData.expectedDeliveries,
+                deliveryService.generateDelivery(1, testData.packages, testData.couponCode)
+            )
         }
-    }
-
-    @Test
-    fun `Multiple coupons supplied`() {
-        assertEquals(
-            listOf(Delivery(1, "PKG1", 0.0, 115.00.toBigDecimal())),
-            deliveryService.generateDelivery(100, listOf(Package(1, "PKG1", 1, 1)), "STATIC"),
-        )
     }
 }
 
@@ -112,5 +116,5 @@ data class DeliveryServiceGenerateDeliveryTest(
     val testCaseName: String,
     val couponCode: String,
     val packages: List<Package>,
-    val expected: List<Delivery>,
+    val expectedDeliveries: List<Delivery>,
 )
