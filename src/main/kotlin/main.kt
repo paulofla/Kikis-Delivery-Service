@@ -69,7 +69,7 @@ private fun getPackageFromUserInput(index: Int): Package {
         } else if (parts.size == 3) {
             Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), "")
         } else if (parts.size == 4) {
-            Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), parts[3])
+            Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), parts[3].uppercase())
         } else {
             failedToCreatePackage()
         }
