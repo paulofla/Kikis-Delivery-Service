@@ -4,11 +4,15 @@
 
 Kiki is setting up a delivery service that will accept orders via a command line application.
 
-### Delivery Cost:
+## Problem 1
+
+Accept packages and calculate the delivery cost allowing 1 coupon per package to be applied that will give a discount to the cost of the package.
+
+#### Delivery Cost:
 
 (Base + (Package total weight * $10) + (Distance to Destination * $5)) * (1 - discount)
 
-### Coupons
+#### Coupons
 
 Kiki has given coupons to people for her new delivery service.
 
@@ -20,70 +24,7 @@ These are the current valid coupons:
 | OFR002    |  7%        | 50km-150km    | 70kg-200kg  |
 | OFR003    |  5%        | 50km-250km    | 10kg-150kg  |
 
-## Model
-
-Coupon:
-
-- id (Not needed but good practice to have it)
-- code
-- discount
-- distanceCriteria: IntRange
-- weightCriteria: IntRange
-- start date (Versus an is active flag in case she mis-printed coupon criteria - I removed this as I can add this functionality later as it is not needed now)
-- expiry date (Versus an is active flag in case she mis-printed coupon criteria - I removed this as I can add this functionality later as it is not needed now)
-
-Coupon Criteria: (1 offer applied to 1 package only)
-
-Package:
-- id (Not needed but good practice to have it)
-- name
-- weight
-- distance
-- couponCode
-
-Delivery:
-- id
-- name
-- discountPercent
-- price: BigDecimal
-
-## Input & Output
-
-1st line of input: base_delivery_cost no_of_packages
-
-2nd line of input: package_id package_weight distance offer_code?
-
-3rd line of input: package_id package_weight distance offer_code?
-
-...
-
-Continue adding packages until you are finished and hit enter
-
-The output will be a list of packages entered, with this format:
-
-packages_id discount_percent total_cost
-
-### Example
-
-User Input:
-
-1. 100 3
-2. PKG1 5 5 OFR001
-3. PKG2 15 5 OFR002
-4. PKG3 10 100 OFR003
-
-Output:
-
-1. PKG1 0 175
-2. PKG2 0 275
-3. PKG 35 665
-
-## Test List
-
-I'm writing a list of things I would like to test for, looking for boundary cases and any other test that would help me
-to ensure correctness.
-
-### My main thoughts & assumptions:
+#### My main thoughts & assumptions:
 1. Base price:
    1. In $ only (No cents allowed)
    2. Greater than 0
@@ -98,7 +39,7 @@ to ensure correctness.
 3. Distance:
    1. In KMs only (meters are not allowed)
    2. Greater than 0
-   3. Max Value: Kotlin's max integer value 
+   3. Max Value: Kotlin's max integer value
    4. This will be enforced when reading from the command line
 4. Discount:
    1. Set by Tombo so assumed it will never be greater than 100 (My boundary)
@@ -114,9 +55,68 @@ to ensure correctness.
    2. There is no limit to the number of package that can be delivered (except the memory limit of where the computer is running but I don't believe that will be exceeded)
    3. The package name will be limited to a single word
 
-### Tests:
-This is my coupon table
+### Input & Output
 
+1st line of input: base_delivery_cost no_of_packages
+
+2nd line of input: package_id package_weight distance offer_code?
+
+3rd line of input: package_id package_weight distance offer_code?
+
+...
+
+Continue adding packages until you are finished and hit enter
+
+The output will be a list of packages entered, with this format:
+
+packages_id discount_percent total_cost
+
+#### Example
+
+User Input:
+
+1. 100 3
+2. PKG1 5 5 OFR001
+3. PKG2 15 5 OFR002
+4. PKG3 10 100 OFR003
+
+Output:
+
+1. PKG1 0 175
+2. PKG2 0 275
+3. PKG 35 665
+
+### Model
+
+####Coupon:
+- id (Not needed but good practice to have it)
+- code
+- discount
+- distanceCriteria: IntRange
+- weightCriteria: IntRange
+- start date (Versus an is active flag in case she mis-printed coupon criteria - I removed this as I can add this functionality later as it is not needed now)
+- expiry date (Versus an is active flag in case she mis-printed coupon criteria - I removed this as I can add this functionality later as it is not needed now)
+
+####Package:
+- id (Not needed but good practice to have it)
+- name
+- weight
+- distance
+- couponCode
+
+####Delivery:
+- id
+- name
+- discountPercent
+- price: BigDecimal
+
+## Thoughts
+### Test List
+
+I'm writing a list of things I would like to test for, looking for boundary cases and any other test that would help me
+to ensure correctness.
+
+### Test Coupon Table Needed:
 | Code         | Discount  | Distance (km) | Weight (kg) |
 | ------------ |:---------:| ------------- |:-----------:|
 | STATIC       |  0.1      | 2km-2km       | 2kg-2kg     |
