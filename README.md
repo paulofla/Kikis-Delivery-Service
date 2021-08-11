@@ -6,7 +6,7 @@ Kiki is setting up a delivery service that will accept orders via a command line
 
 ### Delivery Cost:
 
-(Base + (Package total weight * 10) + (Distance to Destination * 5)) * (1-discount)
+(Base + (Package total weight * $10) + (Distance to Destination * $5)) * (1 - discount)
 
 ### Coupons
 
@@ -123,9 +123,8 @@ This is my coupon table
 | 1%OFF        |  0.01     | 1km-10km      | 1kg-10kg    |
 | HALF-OFF     |  0.5      | 1km-10km      | 1kg-10kg    |
 | 100-OFF      |  1.0      | 1km-10km      | 1kg-10kg    |
-| WHITE SPACE  |  0.05     | 1km-10km      | 1kg-10kg    |
 
-Delivery Cost Calculation Test List:
+#### Delivery Cost Calculation Test List:
 1. Delivery with 1 package and no coupon code
    1. Input:
         1. 100 1      
@@ -134,16 +133,16 @@ Delivery Cost Calculation Test List:
        1. PKG1 0 115
 2. Delivery with 1 package and a coupon code that doesn't exist
     1. Input:
-        1. 100 1
-        2. PKG1 1 1 NO-COUPON
+       1. 100 1
+       2. PKG1 1 1 NO-COUPON
     2. Output:
-        1. PKG1 0 115
+       1. PKG1 0 115
 3. Delivery with 1 package and a coupon code that exists but is not valid due to weight and distance
-    3. Input:
-        1. 100 1
-        2. PKG1 1 1 STATIC
-    4. Output:
-        1. PKG1 0 115
+   1. Input:
+      1. 100 1
+      2. PKG1 1 1 STATIC
+   2. Output:
+       1. PKG1 0 115
 4. Delivery with 1 package and a coupon code that exists but is not valid due to the weight being lighter than allowed
    1. Input:
       1. 100 1
@@ -158,22 +157,22 @@ Delivery Cost Calculation Test List:
       1. PKG1 0 140
 6. Delivery with 1 package and a coupon code that exists and is not valid due to the distance being longer than allowed
    1. Input:
-       1. 100 1
-       2. PKG1 2 1 STATIC
+      1. 100 1
+      2. PKG1 2 1 STATIC
    2. Output:
-       1. PKG1 0 125
+      1. PKG1 0 125
 7. Delivery with 1 package and a coupon code that exists and is not valid due to the distance being shorter than allowed
-   3. Input:
-       1. 100 1
-       2. PKG1 2 3 STATIC
-   4. Output:
-       1. PKG1 0 135
+   1. Input:
+      1. 100 1
+      2. PKG1 2 3 STATIC
+   2. Output:
+      1. PKG1 0 135
 8. Delivery with 1 package and a coupon code that exists and is valid
    1. Input:
-       1. 1 1
-       2. PKG1 2 2 STATIC
+      1. 1 1
+      2. PKG1 2 2 STATIC
    2. Output:
-       1. PKG1 10 27.9
+      1. PKG1 10 27.9
 9. Delivery with 1 package and 1% off coupon code
    1. Input:
       1. 1 1
@@ -211,16 +210,14 @@ Delivery Cost Calculation Test List:
        2. PKG2 10 27.9
        3. PKG2 10 15.5
 
-I feel the above will give me adequate test coverage and I will start from the simplest which I think is the first.
+I feel the above will give me confidence in my test coverage for boundaries. I will start from the simplest which I think is the 1st.
 
-I will test the delivery calculation first and move to taking user input later as this is harder to test.
+I will test the delivery calculation first via tests. I'll manually test user input afterwards as this is harder to test.
 
-The cost of 5 and 10 for the base weight and base distance should be moved to an environment variable in the future.
+### To Do
 
-The display, validation and outputStream could be separated further but I think the logic to get the user input is good enough.
-
-I've left package and coupon to have an id as it is good practice from them to have some difference from packages of the same name and coupons with the same name.
-
-I would ideally like to add an expiry date and start date for coupons but the current requirements don't need it.
-
-I removed the white space test as it was too hard to get via user input (I'd have to do some regular expressions which I didn't want to do for this application right now)
+1. The cost of $5 and $10 for the base weight and base distance should be moved to an environment variable in the future. 
+2. The display, validation and outputStream could be separated further but I think the logic to get the user input is good enough. 
+3. I've left package and coupon to have an id as it is good practice from them to have some difference from packages of the same name and coupons with the same name. 
+4. I would ideally like to add an expiry date and start date for coupons but the current requirements don't need it. 
+5. I removed the white space test as it was complicated to get via user input (I'd have to do some regular expressions which I didn't want to do for this application right now)
