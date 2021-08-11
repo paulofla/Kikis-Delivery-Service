@@ -1,7 +1,7 @@
 fun main(args: Array<String>) {
     println("Welcome to Kiki's delivery service!")
 
-    val (basePrice, numberOfPackages) = getBasePriceAndNumberOfPackages()
+    val (basePrice, numberOfPackages) = getBasePriceAndNumberOfPackagesFromUserInput()
 
     val packages: MutableList<Package> = mutableListOf()
     for (index in 1..numberOfPackages) {
@@ -13,18 +13,36 @@ fun main(args: Array<String>) {
     }
 }
 
-private fun getBasePriceAndNumberOfPackages(): Pair<Int, Int> {
+private val deliveryService = DeliveryService(
+    listOf(
+        Coupon(1, "OFR001", 0.1, IntRange(0, 200), IntRange(70, 200)),
+        Coupon(2, "OFR002", 0.07, IntRange(50, 150), IntRange(100, 250)),
+        Coupon(3, "OFR003", 0.05, IntRange(50, 250), IntRange(10, 150)),
+    )
+)
+
+private fun getBasePriceAndNumberOfPackagesFromUserInput(): Pair<Int, Int> {
     println(
         """
             Please enter the base delivery cost and the number of packages separated by a white space.
             For example: 100 2
         """.trimIndent()
     )
-    val (basePrice, numberOfPackages) = readLine()!!.split(' ')
+
     return try {
-        Pair(basePrice.toInt(), numberOfPackages.toInt())
+        val (basePrice, numberOfPackages) = readLine()!!.split(' ')
+        if (basePrice.toInt() <= 0) {
+            println("Base price needs to be greater than 0")
+            getBasePriceAndNumberOfPackagesFromUserInput()
+        } else if (numberOfPackages.toInt() <= 0) {
+            println("The number of packages needs to be greater than 0")
+            getBasePriceAndNumberOfPackagesFromUserInput()
+        } else {
+            Pair(basePrice.toInt(), numberOfPackages.toInt())
+        }
     } catch (_: Exception) {
-        getBasePriceAndNumberOfPackages()
+        println("Please input 2 numbers separated by a white space")
+        getBasePriceAndNumberOfPackagesFromUserInput()
     }
 }
 
@@ -36,32 +54,26 @@ private fun getPackageFromUserInput(index: Int): Package {
             Joji123 5 100 50-OFF -> This is a 5kg package that will travel 100km that might be eligible for the 50-OFF coupon
         """.trimIndent()
     )
-    val parts = readLine()!!.split(' ')
     fun failedToCreatePackage(): Package {
-        print("Incorrect inputs. Please only put in 3 or 4 items separated by a single white space")
+        println("Incorrect inputs. Please only put in 3 or 4 items separated by a single white space")
         return getPackageFromUserInput(index)
     }
-    return when (parts.size) {
-        4 -> try {
-            Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), parts[3])
-        } catch (_: Exception) {
+    return try {
+        val parts = readLine()!!.split(' ')
+        if (parts[1].toInt() <= 0) {
+            println("The weight of the package needs to be greater than 0")
             failedToCreatePackage()
-        }
-        3 -> try {
+        } else if (parts[2].toInt() <= 0) {
+            println("The distance to deliver the package needs to be greater than 0")
+            failedToCreatePackage()
+        } else if (parts.size == 3) {
             Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), "")
-        } catch (_: Exception) {
+        } else if (parts.size == 4) {
+            Package(index, parts[0], parts[1].toInt(), parts[2].toInt(), parts[3])
+        } else {
             failedToCreatePackage()
         }
-        else -> {
-            failedToCreatePackage()
-        }
+    } catch (_: Exception) {
+        failedToCreatePackage()
     }
 }
-
-private val deliveryService = DeliveryService(
-    listOf(
-        Coupon(1, "OFR001", 0.1, IntRange(0, 200), IntRange(70, 200)),
-        Coupon(2, "OFR002", 0.07, IntRange(50, 150), IntRange(100, 250)),
-        Coupon(3, "OFR003", 0.05, IntRange(50, 250), IntRange(10, 150)),
-    )
-)

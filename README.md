@@ -24,27 +24,28 @@ These are the current valid coupons:
 
 Coupon:
 
-- id
+- id (Not needed but good practice to have it)
 - code
 - discount
 - distanceCriteria: IntRange
 - weightCriteria: IntRange
-- start date (Versus an is active flag in case she mis-printed coupon criteria - will remove this as I can add this functionality later)
-- expiry date (Versus an is active flag in case she mis-printed coupon criteria - will remove this as I can add this functionality later)
+- start date (Versus an is active flag in case she mis-printed coupon criteria - I removed this as I can add this functionality later as it is not needed now)
+- expiry date (Versus an is active flag in case she mis-printed coupon criteria - I removed this as I can add this functionality later as it is not needed now)
 
 Coupon Criteria: (1 offer applied to 1 package only)
 
 Package:
-- id
+- id (Not needed but good practice to have it)
 - name
 - weight
 - distance
+- couponCode
 
 Delivery:
 - id
 - name
 - discountPercent
-- price
+- price: BigDecimal
 
 ## Input & Output
 
@@ -79,7 +80,7 @@ Output:
 
 ## Test List
 
-I'm writing a list of thing sI would like to test for, looking for boundary cases and any other test that would help me
+I'm writing a list of things I would like to test for, looking for boundary cases and any other test that would help me
 to ensure correctness.
 
 ### My main thoughts & assumptions:
@@ -214,4 +215,12 @@ I feel the above will give me adequate test coverage and I will start from the s
 
 I will test the delivery calculation first and move to taking user input later as this is harder to test.
 
-The 5 and 10 for the base weight and base distance cost should be moved to an environment variable in the future.
+The cost of 5 and 10 for the base weight and base distance should be moved to an environment variable in the future.
+
+The display, validation and outputStream could be separated further but I think the logic to get the user input is good enough.
+
+I've left package and coupon to have an id as it is good practice from them to have some difference from packages of the same name and coupons with the same name.
+
+I would ideally like to add an expiry date and start date for coupons but the current requirements don't need it.
+
+I removed the white space test as it was too hard to get via user input (I'd have to do some regular expressions which I didn't want to do for this application right now)
